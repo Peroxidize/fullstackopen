@@ -1,8 +1,8 @@
 import { useState, useEffect } from "react";
-import axios from "axios";
 import Filter from "./components/Filter";
 import PersonForm from "./components/PersonForm";
 import Persons from "./components/Persons";
+import personService from "./services/persons";
 
 const App = () => {
   const [persons, setPersons] = useState([]);
@@ -11,26 +11,43 @@ const App = () => {
   const [newFilter, setFilter] = useState("");
 
   useEffect(() => {
-    axios
-      .get("http://localhost:3001/persons")
-      .then(response => {
-        setPersons(response.data);
-      });
-  }, [])
+    personService
+      .getAll()
+      .then(response => setPersons(response.data))
+      .catch(error => console.log(error));
+  }, []);
 
-  const handleFilterInputChange = (event) => {
+  const onDeletePerson = person => {
+    if (!window.confirm(`Delete ${person.name} ?`)) {
+      return;
+    }
+
+    personService
+      .deletePerson(person.id)
+      .then(response => {
+        console.log(response.data);
+
+        personService
+          .getAll()
+          .then(response => setPersons(response.data))
+          .catch(error => console.log(error));
+      })
+      .catch(error => console.log(error));
+  };
+
+  const handleFilterInputChange = event => {
     setFilter(event.target.value);
   };
 
-  const handleNameInputChange = (event) => {
+  const handleNameInputChange = event => {
     setName(event.target.value);
   };
 
-  const handleNumberInputChange = (event) => {
+  const handleNumberInputChange = event => {
     setNumber(event.target.value);
   };
 
-  const onSubmit = (event) => {
+  const onSubmit = event => {
     event.preventDefault();
 
     if (newNumber === "") {
@@ -39,19 +56,54 @@ const App = () => {
     }
 
     const found = persons.find(person => person.name === newName.trim());
+    const alertText = `${found.name} is already added to the phonebook, replace the old number with a new one?`;
 
-    if (found !== undefined) {
-      alert(`${newName} is already added to phonebook`);
+    if (found !== undefined && window.confirm(alertText)) {
+      const updatePerson = {
+        name: found.name,
+        number: newNumber.trim(),
+        id: found.id,
+      };
+
+      personService
+        .updatePerson(updatePerson)
+        .then(response => {
+          console.log(response.data);
+
+          personService
+            .getAll()
+            .then(response => setPersons(response.data))
+            .catch(error => console.log(error));
+        })
+        .catch(error => console.log(error));
+
       return;
     }
 
-    setPersons(persons.concat({ name: newName.trim(), number: newNumber.trim(), id: persons.length + 1 }));
-  }
+    const newPerson = {
+      name: newName.trim(),
+      number: newNumber.trim(),
+      id: persons.length + 1,
+    };
+
+    personService
+      .create(newPerson)
+      .then(response => console.log(response.data))
+      .catch(error => {
+        console.log(error);
+        return;
+      });
+
+    setPersons(persons.concat(newPerson));
+  };
 
   return (
     <>
       <h2>Phonebook</h2>
-      <Filter newFilter={newFilter} handleFilterInputChange={handleFilterInputChange} />
+      <Filter
+        newFilter={newFilter}
+        handleFilterInputChange={handleFilterInputChange}
+      />
       <h1>add new</h1>
       <PersonForm
         onSubmit={onSubmit}
@@ -61,9 +113,13 @@ const App = () => {
         handleNumberInputChange={handleNumberInputChange}
       />
       <h2>Numbers</h2>
-      <Persons persons={persons} newFilter={newFilter} />
+      <Persons
+        persons={persons}
+        newFilter={newFilter}
+        onDeletePerson={onDeletePerson}
+      />
     </>
   );
-}
+};
 
-export default App
+export default App;
