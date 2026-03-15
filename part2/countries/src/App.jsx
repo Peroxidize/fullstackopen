@@ -1,7 +1,5 @@
 import { useState, useEffect } from "react";
-import countries from "../countries.json";
 import countriesService from "./services/countries";
-import axios from "axios";
 
 const CountriesList = ({ list, setSelected }) => {
   return list.map(country => {
@@ -16,12 +14,24 @@ const CountriesList = ({ list, setSelected }) => {
 };
 
 const ShowCountry = ({ list, selected, setSelected }) => {
-  const country = selected !== null ? selected : list;
+  const [weather, setWeather] = useState();
+  const country = selected ? selected : list;
   const name = country.name.common;
   const capital = country.capital;
   const area = country.area;
   const languages = Object.values(country.languages);
   const flag = country.flags.png;
+  const iconTemplate = "https://openweathermap.org/payload/api/media/file/";
+
+  useEffect(() => {
+    countriesService
+      .getWeather(capital)
+      .then(response => {
+        setWeather(response.data);
+        console.log(response.data.wind);
+      })
+      .catch(error => console.log(error));
+  }, []);
 
   return (
     <>
@@ -38,6 +48,14 @@ const ShowCountry = ({ list, selected, setSelected }) => {
         ))}
       </ul>
       <img src={flag} />
+      {weather ? (
+        <>
+          <h2>Weather in {capital}</h2>
+          <div>Temperature {weather.main.temp} Celcius</div>
+          <img src={`${iconTemplate}${weather.weather[0].icon}.png`} />
+          <div>Wind {weather.wind.speed} m/s</div>
+        </>
+      ) : null}
     </>
   );
 };
@@ -65,17 +83,18 @@ const FilterContent = ({ list, selected, setSelected }) => {
 };
 
 const App = () => {
-  const [data, setData] = useState(countries);
+  const [data, setData] = useState([]);
   const [filteredData, setFilteredData] = useState([]);
   const [selected, setSelected] = useState(null);
 
   useEffect(() => {
-    // countriesService.getAll
-    //   .then(response => {
-    //     console.log(response.data);
-    //     setData(response.data);
-    //   })
-    //   .catch(error => console.log(error));
+    countriesService
+      .getAll()
+      .then(response => {
+        console.log(response.data);
+        setData(response.data);
+      })
+      .catch(error => console.log(error));
   }, []);
 
   const searchHandle = event => {
