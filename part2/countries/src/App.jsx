@@ -1,18 +1,61 @@
 import { useState, useEffect } from "react";
 import countries from "../countries.json";
-import Content from "./components/Content";
+import countriesService from "./services/countries";
 import axios from "axios";
+
+const CountriesList = ({ list }) => {
+  return list.map(country => {
+    const name = country.name.common;
+    return <div key={name}>{name}</div>;
+  });
+};
+
+const ShowCountry = ({ list }) => {
+  const country = list[0];
+  const name = country.name.common;
+  const capital = country.capital;
+  const area = country.area;
+  const languages = Object.values(country.languages);
+  const flag = country.flags.png;
+
+  return (
+    <>
+      <h1>{name}</h1>
+      <div>Capital {capital}</div>
+      <div>Area {area}</div>
+      <h2>Languages</h2>
+      <ul>
+        {Object.values(languages).map(lang => (
+          <li key={lang}>{lang}</li>
+        ))}
+      </ul>
+      <img src={flag} />
+    </>
+  );
+};
+
+const FilterContent = ({ list }) => {
+  if (list.length > 10) {
+    return <div>Too many matches, specify another field</div>;
+  }
+
+  if (list.length > 1) {
+    return <CountriesList list={list} />;
+  }
+
+  if (list.length === 1) {
+    return <ShowCountry list={list} />;
+  }
+
+  return <span></span>;
+};
 
 const App = () => {
   const [data, setData] = useState(countries);
   const [filteredData, setFilteredData] = useState([]);
-  const [search, setSearch] = useState("");
-  const [timeoutID, setTimeoutID] = useState();
-  const baseUrl = "https://studies.cs.helsinki.fi/restcountries/api/";
 
   useEffect(() => {
-    // axios
-    //   .get(`${baseUrl}all`)
+    // countriesService.getAll
     //   .then(response => {
     //     console.log(response.data);
     //     setData(response.data);
@@ -20,50 +63,28 @@ const App = () => {
     //   .catch(error => console.log(error));
   }, []);
 
-  const onChange = event => {
+  const searchHandle = event => {
     const search = event.target.value;
-    setSearch(search);
 
-    clearTimeout(timeoutID);
+    if (search === "") {
+      setFilteredData([]);
+      return;
+    }
 
-    const handler = setTimeout(() => {
-      const copy = data.filter(country =>
-        country.name.common.toLowerCase().includes(search.toLowerCase())
-      );
-      setFilteredData(copy);
-    }, 250);
-
-    setTimeoutID(handler);
+    setFilteredData(
+      data.filter(country => {
+        const name = country.name.common.toLowerCase();
+        return name.includes(search);
+      })
+    );
   };
 
   return (
     <>
       <div>
-        find countries <input value={search} onChange={onChange} />
+        find countries <input onChange={searchHandle} />
       </div>
-
-      {search === "" ? (
-        <span />
-      ) : filteredData.length === 1 ? (
-        <>
-          <h1>{filteredData[0].name.common}</h1>
-          <div>Capital {filteredData[0].capital[0]}</div>
-          <div>{filteredData[0].area}</div>
-          <h2>Languages</h2>
-          <ul>
-            {Object.values(filteredData[0].languages).map(lang => (
-              <li key={lang}>{lang}</li>
-            ))}
-          </ul>
-          <img src={filteredData[0].flags.png} />
-        </>
-      ) : filteredData.length > 10 ? (
-        <div>Too many matches, specify another field</div>
-      ) : (
-        filteredData.map(country => (
-          <div key={country.name.official}>{country.name.common}</div>
-        ))
-      )}
+      <FilterContent list={filteredData} />
     </>
   );
 };
