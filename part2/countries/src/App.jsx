@@ -3,15 +3,20 @@ import countries from "../countries.json";
 import countriesService from "./services/countries";
 import axios from "axios";
 
-const CountriesList = ({ list }) => {
+const CountriesList = ({ list, setSelected }) => {
   return list.map(country => {
     const name = country.name.common;
-    return <div key={name}>{name}</div>;
+
+    return (
+      <div key={name}>
+        {name} <button onClick={() => setSelected(country)}>Show</button>
+      </div>
+    );
   });
 };
 
-const ShowCountry = ({ list }) => {
-  const country = list[0];
+const ShowCountry = ({ list, selected, setSelected }) => {
+  const country = selected !== null ? selected : list;
   const name = country.name.common;
   const capital = country.capital;
   const area = country.area;
@@ -20,12 +25,15 @@ const ShowCountry = ({ list }) => {
 
   return (
     <>
+      {selected ? (
+        <button onClick={() => setSelected(null)}>Hide</button>
+      ) : null}
       <h1>{name}</h1>
       <div>Capital {capital}</div>
       <div>Area {area}</div>
       <h2>Languages</h2>
       <ul>
-        {Object.values(languages).map(lang => (
+        {languages.map(lang => (
           <li key={lang}>{lang}</li>
         ))}
       </ul>
@@ -34,17 +42,23 @@ const ShowCountry = ({ list }) => {
   );
 };
 
-const FilterContent = ({ list }) => {
+const FilterContent = ({ list, selected, setSelected }) => {
+  if (selected) {
+    return <ShowCountry selected={selected} setSelected={setSelected} />;
+  }
+
   if (list.length > 10) {
     return <div>Too many matches, specify another field</div>;
   }
 
   if (list.length > 1) {
-    return <CountriesList list={list} />;
+    return <CountriesList list={list} setSelected={setSelected} />;
   }
 
   if (list.length === 1) {
-    return <ShowCountry list={list} />;
+    return (
+      <ShowCountry list={list[0]} selected={null} setSelected={setSelected} />
+    );
   }
 
   return <span></span>;
@@ -53,6 +67,7 @@ const FilterContent = ({ list }) => {
 const App = () => {
   const [data, setData] = useState(countries);
   const [filteredData, setFilteredData] = useState([]);
+  const [selected, setSelected] = useState(null);
 
   useEffect(() => {
     // countriesService.getAll
@@ -65,6 +80,8 @@ const App = () => {
 
   const searchHandle = event => {
     const search = event.target.value;
+
+    setSelected(null);
 
     if (search === "") {
       setFilteredData([]);
@@ -84,7 +101,11 @@ const App = () => {
       <div>
         find countries <input onChange={searchHandle} />
       </div>
-      <FilterContent list={filteredData} />
+      <FilterContent
+        list={filteredData}
+        selected={selected}
+        setSelected={setSelected}
+      />
     </>
   );
 };
