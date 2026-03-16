@@ -31,11 +31,9 @@ app.get("/api/persons", (request, response) => {
 app.get("/info", (request, response) => {
     const length = persons.length;
     const currentDate = new Date();
-    console.log(currentDate);
+    const strout = `<p>Phonebook has info for ${length} people</p>${currentDate}`;
 
-    response.send(
-        `<p>Phonebook has info for ${length} people</p>${currentDate}`,
-    );
+    response.send(strout);
 });
 
 app.get("/api/persons/:id", (request, response) => {
@@ -48,6 +46,19 @@ app.get("/api/persons/:id", (request, response) => {
     }
 
     response.status(200).json(person);
+});
+
+app.delete("/api/persons/:id", (request, response) => {
+    const id = request.params.id;
+    const originalLength = persons.length;
+    persons = persons.filter((person) => person.id !== id);
+
+    if (originalLength === persons.length) {
+        response.status(404).json({ message: "Person not found!" });
+        return;
+    }
+
+    response.status(204).end();
 });
 
 const PORT = 3001;
