@@ -5,3 +5,6 @@ curl "http://localhost:3001/api/persons/4"
 curl "http://localhost:3001/info"
 
 curl -X DELETE "http://localhost:3001/api/persons/5"
+
+curl -X POST "http://localhost:3001/api/persons" \
+--json '{"name": "UQPhase", "number": "67-67-67"}'
