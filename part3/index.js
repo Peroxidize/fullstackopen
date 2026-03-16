@@ -28,6 +28,18 @@ app.get("/api/persons", (request, response) => {
     response.json(persons);
 });
 
+app.get("/api/persons/:id", (request, response) => {
+    const id = request.params.id;
+    const person = persons.find((note) => note.id === id);
+
+    if (!person) {
+        response.status(404).json({ error: "content not found!" });
+        return;
+    }
+
+    response.status(200).json(person);
+});
+
 const PORT = 3001;
 app.listen(PORT, () => {
     console.log(`Server listening on port: ${PORT}`);
