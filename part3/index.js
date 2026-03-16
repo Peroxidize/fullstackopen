@@ -28,6 +28,16 @@ app.get("/api/persons", (request, response) => {
     response.json(persons);
 });
 
+app.get("/info", (request, response) => {
+    const length = persons.length;
+    const currentDate = new Date();
+    console.log(currentDate);
+
+    response.send(
+        `<p>Phonebook has info for ${length} people</p>${currentDate}`,
+    );
+});
+
 app.get("/api/persons/:id", (request, response) => {
     const id = request.params.id;
     const person = persons.find((note) => note.id === id);

@@ -1,3 +1,5 @@
 curl "http://localhost:3001/api/persons"
 
 curl "http://localhost:3001/api/persons/3"
+
+curl "http://localhost:3001/info"
