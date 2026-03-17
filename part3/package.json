@@ -7,6 +7,8 @@
     "test": "echo \"Error: no test specified\" && exit 1",
     "start": "node index.js",
     "dev": "node --watch index.js",
+    "build:ui": "rm -rf dist && cd ../part2/phonebook && pnpm run build && cp -r dist ../../part3",
+    "deploy:full": "pnpm run build:ui && git add . && git commit -m uibuild && git push",
     "lint": "eslint ."
   },
   "keywords": [],
@@ -14,7 +16,6 @@
   "license": "ISC",
   "packageManager": "pnpm@10.32.1",
   "dependencies": {
-    "cors": "^2.8.6",
     "express": "^5.2.1",
     "morgan": "^1.10.1"
   },
