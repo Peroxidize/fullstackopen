@@ -146,6 +146,8 @@ const App = () => {
       .then(response => {
         setPersons(response.data);
         console.log(response.data);
+
+        showMessage(`Added ${newPerson.name}`, "success");
       })
       .catch(error => {
         console.log(error);
@@ -153,8 +155,6 @@ const App = () => {
         const msg = `Unable to fetch data from the server`;
         showMessage(msg, "error");
       });
-
-    showMessage(`Added ${newPerson.name}`, "success");
   };
 
   return (
