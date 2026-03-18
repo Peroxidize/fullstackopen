@@ -29,11 +29,11 @@ app.get("/api/persons", (request, response) => {
 });
 
 app.get("/info", (request, response) => {
-  const length = persons.length;
   const currentDate = new Date();
-  const strout = `<p>Phonebook has info for ${length} people</p>${currentDate}`;
-
-  response.send(strout);
+  Phonebook.find({}).then((phonebook) => {
+    const strout = `<p>Phonebook has info for ${phonebook.length} people</p>${currentDate}`;
+    response.send(strout);
+  });
 });
 
 app.get("/api/persons/:id", (request, response) => {
@@ -61,10 +61,6 @@ app.delete("/api/persons/:id", (request, response) => {
 app.post("/api/persons", (request, response) => {
   const body = request.body;
 
-  if (!body.content) {
-    return response.status(400).send({ error: "content missing" });
-  }
-
   const name = body.name;
   const number = body.number;
 
@@ -85,7 +81,7 @@ app.post("/api/persons", (request, response) => {
 });
 
 app.put("/api/persons/:id", (request, response, next) => {
-  const { name, number } = request.body;
+  const { number } = request.body;
   const id = request.params.id;
 
   Phonebook.findById(id)
@@ -94,7 +90,6 @@ app.put("/api/persons/:id", (request, response, next) => {
         return response.status(404).end();
       }
 
-      phonebook.name = name;
       phonebook.number = number;
 
       return phonebook.save().then((updatedNote) => {
