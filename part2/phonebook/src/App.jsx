@@ -131,7 +131,10 @@ const App = () => {
 
     personService
       .create(newPerson)
-      .then(response => console.log(response.data))
+      .then(response => {
+        console.log(response.data);
+        showMessage(`Added ${newPerson.name}`, "success");
+      })
       .catch(error => {
         const errorMsg = error.response.data.error;
 
@@ -146,8 +149,6 @@ const App = () => {
       .then(response => {
         setPersons(response.data);
         console.log(response.data);
-
-        showMessage(`Added ${newPerson.name}`, "success");
       })
       .catch(error => {
         console.log(error);
