@@ -8,3 +8,6 @@ curl -X DELETE "http://localhost:3001/api/persons/5"
 
 curl -X POST "http://localhost:3001/api/persons" \
 --json '{"name": "ASASDSkibidi", "number": "67-67-67"}'
+
+curl -X PUT "http://localhost:3001/api/persons/69ba84bd2651d1fdd2587775" \
+--json '{"name": "Anna", "number": "412-6123-123"}'
