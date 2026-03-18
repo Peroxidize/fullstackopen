@@ -118,8 +118,7 @@ const App = () => {
           .catch(error => {
             console.log(error);
 
-            const msg = `The information of ${updatePerson.name} has already been removed`;
-            showMessage(msg, "error");
+            showMessage(error.response.data.error, "error");
           });
       }
       return;
@@ -134,10 +133,10 @@ const App = () => {
       .create(newPerson)
       .then(response => console.log(response.data))
       .catch(error => {
-        console.log(error);
+        const errorMsg = error.response.data.error;
 
-        const msg = `Unable to save the information of ${newPerson.name}`;
-        showMessage(msg, "error");
+        console.log(errorMsg);
+        showMessage(errorMsg, "error");
 
         return;
       });
