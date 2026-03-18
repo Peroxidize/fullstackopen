@@ -1,0 +1,4 @@
+curl http://localhost:3003/api/blogs
+
+curl -X POST http://localhost:3003/api/blogs \
+--json '{"title": "jackseptcieeyec", "author": "pweidpwe", "url": "youtube.com", "likes": "6767"}'
