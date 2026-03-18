@@ -1,7 +1,7 @@
 const Persons = ({ persons, newFilter, onDeletePerson }) => {
   return (
     <>
-      {persons.map((person) => {
+      {persons.map(person => {
         const name = person.name.toLowerCase();
 
         if (newFilter && !name.includes(newFilter.toLowerCase())) {

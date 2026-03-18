@@ -18,7 +18,10 @@ const App = () => {
   useEffect(() => {
     personService
       .getAll()
-      .then(response => setPersons(response.data))
+      .then(response => {
+        setPersons(response.data);
+        console.log(response.data);
+      })
       .catch(error => {
         console.log(error);
 
@@ -44,10 +47,18 @@ const App = () => {
       .then(response => {
         console.log(response.data);
 
-        const copy = persons.filter(
-          personToBeRemoved => personToBeRemoved.id !== person.id
-        );
-        setPersons(copy);
+        personService
+          .getAll()
+          .then(response => {
+            setPersons(response.data);
+            console.log(response.data);
+          })
+          .catch(error => {
+            console.log(error);
+
+            const msg = `Unable to fetch data from the server`;
+            showMessage(msg, "error");
+          });
 
         const msg = `Information of ${person.name} has been removed`;
         showMessage(msg, "success");
@@ -117,7 +128,6 @@ const App = () => {
     const newPerson = {
       name: newName.trim(),
       number: newNumber.trim(),
-      id: persons.length + 1,
     };
 
     personService
@@ -132,7 +142,19 @@ const App = () => {
         return;
       });
 
-    setPersons(persons.concat(newPerson));
+    personService
+      .getAll()
+      .then(response => {
+        setPersons(response.data);
+        console.log(response.data);
+      })
+      .catch(error => {
+        console.log(error);
+
+        const msg = `Unable to fetch data from the server`;
+        showMessage(msg, "error");
+      });
+
     showMessage(`Added ${newPerson.name}`, "success");
   };
 
