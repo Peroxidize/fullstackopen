@@ -12,7 +12,7 @@ beforeEach(async () => {
     await Blog.insertMany(sampleData.blogs);
 });
 
-test("notes are returned as json", async () => {
+test("bloglists are returned as json", async () => {
     await api
         .get("/api/blogs")
         .expect(200)
@@ -20,6 +20,12 @@ test("notes are returned as json", async () => {
         .expect(response => {
             response.body.length;
         }, 6);
+});
+
+test("bloglist identifier is named id", async () => {
+    await api.get("/api/blogs").expect(response => {
+        response.body[0].id;
+    }, sampleData.blogs[0]._id);
 });
 
 after(async () => {
