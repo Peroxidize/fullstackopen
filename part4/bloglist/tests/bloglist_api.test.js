@@ -91,6 +91,18 @@ describe("DELETE", () => {
 
         await api.delete(`/api/blogs/${id}`).expect(204);
     });
+
+    test("malformatted id", async () => {
+        const id = "5a422a851b54a676234d1";
+
+        await api.delete(`/api/blogs/${id}`).expect(400);
+    });
+
+    test("no matching id", async () => {
+        const id = "0a422a851b54a676234d17f7";
+
+        await api.delete(`/api/blogs/${id}`).expect(404);
+    });
 });
 
 describe("UPDATE", () => {
@@ -99,6 +111,26 @@ describe("UPDATE", () => {
         const likes = 6767;
 
         await api.put(`/api/blogs/${id}`).send({ likes: likes }).expect(200);
+    });
+
+    test("malformatted id", async () => {
+        const id = "5a422a851b54a676234d1";
+        const likes = 123;
+
+        await api.put(`/api/blogs/${id}`).send({ likes: likes }).expect(400);
+    });
+
+    test("no matching id", async () => {
+        const id = "0a422a851b54a676234d17f7";
+        const likes = 999;
+
+        await api.put(`/api/blogs/${id}`).send({ likes: likes }).expect(404);
+    });
+
+    test("missing property likes", async () => {
+        const id = "0a422a851b54a676234d17f7";
+
+        await api.put(`/api/blogs/${id}`).expect(400);
     });
 });
 

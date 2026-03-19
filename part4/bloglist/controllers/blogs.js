@@ -46,16 +46,38 @@ blogsRouter.post("/", async (request, response) => {
 blogsRouter.delete("/:id", async (request, response) => {
     const id = request.params.id;
 
+    if (!mongoose.Types.ObjectId.isValid(id)) {
+        return response.status(400).send({ error: "malformatted id" });
+    }
+
     const deletedBlog = await Blog.findByIdAndDelete(id);
+
+    if (!deletedBlog) {
+        return response.status(404).send({ error: "no matching id" });
+    }
 
     response.status(204).end();
 });
 
 blogsRouter.put("/:id", async (request, response) => {
     const id = request.params.id;
+
+    if (!mongoose.Types.ObjectId.isValid(id)) {
+        return response.status(400).send({ error: "malformatted id" });
+    }
+
+    if (!request.body || !request.body.likes) {
+        return response.status(400).send({ error: "missing property likes" });
+    }
+
     const likes = request.body.likes;
 
     const blog = await Blog.findById(id);
+
+    if (!blog) {
+        return response.status(404).send({ error: "no matching id" });
+    }
+
     blog.likes = likes;
 
     const result = await blog.save();
