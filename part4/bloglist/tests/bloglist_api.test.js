@@ -64,6 +64,23 @@ test("blog object is missing likes property default to 0", async () => {
         }, 0);
 });
 
+test("blog is missing author or url property", async () => {
+    const sample = {
+        author: "Pewdiepie",
+        url: "https://youtube.com/",
+        likes: 1,
+    };
+
+    const sample2 = {
+        title: "STOP USING AI",
+        author: "Pewdiepie",
+        likes: 5,
+    };
+
+    await api.post("/api/blogs").send(sample).expect(400);
+    await api.post("/api/blogs").send(sample2).expect(400);
+});
+
 after(async () => {
     await mongoose.connection.close();
 });

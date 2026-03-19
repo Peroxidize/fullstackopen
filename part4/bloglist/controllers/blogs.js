@@ -14,6 +14,16 @@ blogsRouter.post("/", async (request, response) => {
     const url = body.url;
     let likes = body.likes;
 
+    if (!title) {
+        return response
+            .status(400)
+            .send({ error: "title property is missing" });
+    }
+
+    if (!url) {
+        return response.status(400).send({ error: "url property is missing" });
+    }
+
     if (!likes) {
         likes = 0;
     }
