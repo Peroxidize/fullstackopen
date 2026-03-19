@@ -89,7 +89,7 @@ describe("DELETE", () => {
     test("delete blog post", async () => {
         const id = "5a422a851b54a676234d17f7";
 
-        await api.delete("/api/blogs").send({ id: id }).expect(204);
+        await api.delete(`/api/blogs/${id}`).expect(204);
     });
 });
 

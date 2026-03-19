@@ -43,20 +43,12 @@ blogsRouter.post("/", async (request, response) => {
     response.status(201).json(result);
 });
 
-blogsRouter.delete("/", async (request, response) => {
-    if (!mongoose.Types.ObjectId.isValid(request.body.id)) {
-        return response.status(400).send({ error: "malformatted id" });
-    }
+blogsRouter.delete("/:id", async (request, response) => {
+    const id = request.params.id;
 
-    const id = new mongoose.Types.ObjectId(request.body.id);
+    const deletedBlog = await Blog.findByIdAndDelete(id);
 
-    const deletedBlog = await Blog.deleteOne({ _id: id });
-
-    if (deletedBlog.deletedCount === 1) {
-        return response.status(204).end();
-    }
-
-    response.status(404).send({ error: "id not found" });
+    response.status(204).end();
 });
 
 module.exports = blogsRouter;
