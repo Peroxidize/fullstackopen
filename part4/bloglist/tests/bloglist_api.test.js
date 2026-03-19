@@ -48,6 +48,22 @@ test("blog has been added to database successfully", async () => {
     assert.strictEqual(response.body.length, sampleData.blogs.length + 1);
 });
 
+test("blog object is missing likes property default to 0", async () => {
+    const sample = {
+        title: "STOP USING AI",
+        author: "Pewdiepie",
+        url: "https://youtube.com/",
+    };
+
+    await api
+        .post("/api/blogs")
+        .send(sample)
+        .expect(201)
+        .expect(result => {
+            result.body.likes;
+        }, 0);
+});
+
 after(async () => {
     await mongoose.connection.close();
 });

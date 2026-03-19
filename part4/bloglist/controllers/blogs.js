@@ -8,7 +8,24 @@ blogsRouter.get("/", async (request, response) => {
 });
 
 blogsRouter.post("/", async (request, response) => {
-    const blog = new Blog(request.body);
+    const body = request.body;
+    const title = body.title;
+    const author = body.author;
+    const url = body.url;
+    let likes = body.likes;
+
+    if (!likes) {
+        likes = 0;
+    }
+
+    const blogObject = {
+        title: title,
+        author: author,
+        url: url,
+        likes: likes,
+    };
+
+    const blog = new Blog(blogObject);
 
     const result = await blog.save();
 
