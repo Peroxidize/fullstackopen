@@ -1,3 +1,4 @@
+const mongoose = require("mongoose");
 const blogsRouter = require("express").Router();
 const Blog = require("../models/blog");
 
@@ -40,6 +41,22 @@ blogsRouter.post("/", async (request, response) => {
     const result = await blog.save();
 
     response.status(201).json(result);
+});
+
+blogsRouter.delete("/", async (request, response) => {
+    if (!mongoose.Types.ObjectId.isValid(request.body.id)) {
+        return response.status(400).send({ error: "malformatted id" });
+    }
+
+    const id = new mongoose.Types.ObjectId(request.body.id);
+
+    const deletedBlog = await Blog.deleteOne({ _id: id });
+
+    if (deletedBlog.deletedCount === 1) {
+        return response.status(204).end();
+    }
+
+    response.status(404).send({ error: "id not found" });
 });
 
 module.exports = blogsRouter;
