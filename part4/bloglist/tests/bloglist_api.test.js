@@ -93,6 +93,15 @@ describe("DELETE", () => {
     });
 });
 
+describe("UPDATE", () => {
+    test("update blog post", async () => {
+        const id = "5a422a851b54a676234d17f7";
+        const likes = 6767;
+
+        await api.put(`/api/blogs/${id}`).send({ likes: likes }).expect(200);
+    });
+});
+
 after(async () => {
     await mongoose.connection.close();
 });
