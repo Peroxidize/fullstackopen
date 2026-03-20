@@ -60,7 +60,68 @@ const blogs = [
     },
 ];
 
+const users = [
+    {
+        _id: "650b0000a1b2c300d4e50001",
+        username: "sam",
+        passwordHash: "$2b$10$examplehashsam0000000000000000000000",
+        name: "Sam Rivera",
+        blogs: [],
+    },
+    {
+        _id: "650b0000a1b2c300d4e50002",
+        username: "mira",
+        passwordHash: "$2b$10$examplehashmira000000000000000000000",
+        name: "Mira Chen",
+        blogs: [],
+    },
+    {
+        _id: "650b0000a1b2c300d4e50003",
+        username: "tony",
+        passwordHash: "$2b$10$examplehashtony000000000000000000000",
+        name: "Tony Alvarez",
+        blogs: [],
+    },
+];
+
+const blogs_new = [
+    {
+        _id: "650b0000a1b2c300d4e50101",
+        title: "Intro to Functional Programming",
+        author: "Jordan Lee",
+        url: "https://example.org/functional-programming",
+        likes: 128,
+        user: null,
+    },
+    {
+        _id: "650b0000a1b2c300d4e50102",
+        title: "Scaling PostgreSQL for Analytics",
+        author: "Dana Park",
+        url: "https://example.org/scaling-postgres",
+        likes: 64,
+        user: null,
+    },
+    {
+        _id: "650b0000a1b2c300d4e50103",
+        title: "Design Systems: Principles and Trade-offs",
+        author: "Alex Morgan",
+        url: "https://example.org/design-systems",
+        likes: 21,
+        user: null,
+    },
+    {
+        _id: "650b0000a1b2c300d4e50104",
+        title: "Beginner's Guide to Web Accessibility",
+        author: "Priya Nair",
+        url: "https://example.org/web-accessibility",
+        likes: 9,
+        user: null,
+    },
+];
+
 module.exports = {
     listWithOneBlog,
     blogs,
+    users,
+    blogs_new,
 };

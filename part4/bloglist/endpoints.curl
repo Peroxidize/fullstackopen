@@ -7,3 +7,20 @@ curl -X POST http://localhost:3003/api/users \
 --json '{"username": "pewdiepie", "name": "Felix Kjellberg", "password": "skibidi_toiler"}'
 
 curl http://localhost:3003/api/users
+
+Users:
+curl -X POST http://localhost:3003/api/users --json '{"username":"ava_dev","name":"Ava Thompson","password":"password123"}'
+curl -X POST http://localhost:3003/api/users --json '{"username":"liam_codes","name":"Liam Garcia","password":"password123"}'
+curl -X POST http://localhost:3003/api/users --json '{"username":"noah_tester","name":"Noah Kim","password":"password123"}'
+
+Blogs for ava_dev (3):
+curl -X POST http://localhost:3003/api/blogs --json '{"title":"Getting Started with Node.js","author":"Ava Thompson","url":"https://example.com/getting-started-nodejs","likes":42}'
+curl -X POST http://localhost:3003/api/blogs --json '{"title":"Async Patterns in JavaScript","author":"Ava Thompson","url":"https://example.com/async-patterns-js","likes":88}'
+curl -X POST http://localhost:3003/api/blogs --json '{"title":"Small Tips for Express Middleware","author":"Ava Thompson","url":"https://example.com/express-middleware-tips","likes":12}'
+
+Blogs for liam_codes (2):
+curl -X POST http://localhost:3003/api/blogs --json '{"title":"A Deep Dive into Mongoose","author":"Liam Garcia","url":"https://example.com/deep-dive-mongoose","likes":27}'
+curl -X POST http://localhost:3003/api/blogs --json '{"title":"Performance Tips for MongoDB","author":"Liam Garcia","url":"https://example.com/mongodb-performance-tips","likes":63}'
+
+Blogs for noah_tester (1):
+curl -X POST http://localhost:3003/api/blogs --json '{"title":"Testing Express APIs","author":"Noah Kim","url":"https://example.com/testing-express-apis","likes":15}'

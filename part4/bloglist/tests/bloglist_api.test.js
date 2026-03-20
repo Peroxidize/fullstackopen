@@ -3,14 +3,14 @@ const assert = require("node:assert");
 const mongoose = require("mongoose");
 const supertest = require("supertest");
 const app = require("../app");
-const sampleData = require("./sample_data");
+const sample_data = require("./sample_data");
 const Blog = require("../models/blog");
 
 const api = supertest(app);
 
 beforeEach(async () => {
     await Blog.deleteMany({});
-    await Blog.insertMany(sampleData.blogs);
+    await Blog.insertMany(sample_data.blogs);
 });
 
 describe("GET", () => {
@@ -27,7 +27,7 @@ describe("GET", () => {
     test("bloglist identifier is named id", async () => {
         await api.get("/api/blogs").expect(response => {
             response.body[0].id;
-        }, sampleData.blogs[0]._id);
+        }, sample_data.blogs[0]._id);
     });
 });
 
@@ -48,7 +48,7 @@ describe("POST", () => {
 
         const response = await api.get("/api/blogs");
 
-        assert.strictEqual(response.body.length, sampleData.blogs.length + 1);
+        assert.strictEqual(response.body.length, sample_data.blogs.length + 1);
     });
 
     test("blog object is missing likes property default to 0", async () => {
