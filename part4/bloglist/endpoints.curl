@@ -2,3 +2,8 @@ curl http://localhost:3003/api/blogs
 
 curl -X POST http://localhost:3003/api/blogs \
 --json '{"title": "peiwdfpiuf", "author": "specidyfc", "url": "youtube.com", "likes": "1337"}'
+
+curl -X POST http://localhost:3003/api/users \
+--json '{"username": "pewdiepie", "name": "Felix Kjellberg", "password": "skibidi_toiler"}'
+
+curl http://localhost:3003/api/users
