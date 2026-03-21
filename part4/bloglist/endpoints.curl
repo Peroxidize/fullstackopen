@@ -8,8 +8,11 @@ curl -X POST http://localhost:3003/api/users \
 
 curl http://localhost:3003/api/users
 
+curl -X POST http://localhost:3003/api/login \
+--json '{"username":"skibidi","password":"password123"}'
+
 Users:
-curl -X POST http://localhost:3003/api/users --json '{"username":"ava_dev","name":"Ava Thompson","password":"password123"}'
+curl -X POST http://localhost:3003/api/users --json '{"username":"skibidi123456789","name":"Toilet","password":"password123"}'
 curl -X POST http://localhost:3003/api/users --json '{"username":"liam_codes","name":"Liam Garcia","password":"password123"}'
 curl -X POST http://localhost:3003/api/users --json '{"username":"noah_tester","name":"Noah Kim","password":"password123"}'
 
