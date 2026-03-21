@@ -1,7 +1,8 @@
 curl http://localhost:3003/api/blogs
 
 curl -X POST http://localhost:3003/api/blogs \
---json '{"title": "peiwdfpiuf", "author": "specidyfc", "url": "youtube.com", "likes": "1337"}'
+--json '{"title": "peiwdfpiuf", "author": "specidyfc", "url": "youtube.com", "likes": "1337"}' \
+-H 'Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VybmFtZSI6InNraWJpZGkiLCJpZCI6IjY5YmUzYmFiN2Q2OTc3MzI4MGM3NTc0YiIsImlhdCI6MTc3NDA3OTkxOSwiZXhwIjoxNzc0MDgzNTE5fQ.oWQrkHZKobOOvcJkWbR-bdGuh3SR0L2tFJR5lHcfYf0'
 
 curl -X POST http://localhost:3003/api/users \
 --json '{"username": "pewdiepie", "name": "Felix Kjellberg", "password": "skibidi_toiler"}'
@@ -9,7 +10,7 @@ curl -X POST http://localhost:3003/api/users \
 curl http://localhost:3003/api/users
 
 curl -X POST http://localhost:3003/api/login \
---json '{"username":"skibidi","password":"password123"}'
+--json '{"username":"skibidi","password":"password123"}' 
 
 Users:
 curl -X POST http://localhost:3003/api/users --json '{"username":"skibidi123456789","name":"Toilet","password":"password123"}'
