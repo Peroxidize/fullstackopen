@@ -1,8 +1,7 @@
 const mongoose = require("mongoose");
 const blogsRouter = require("express").Router();
-const jwt = require("jsonwebtoken");
 const Blog = require("../models/blog");
-const User = require("../models/user");
+const { userExtractor } = require("../utils/middleware");
 
 blogsRouter.get("/", async (request, response) => {
     const blogs = await Blog.find({}).populate("user");
@@ -10,7 +9,7 @@ blogsRouter.get("/", async (request, response) => {
     response.status(200).json(blogs);
 });
 
-blogsRouter.post("/", async (request, response) => {
+blogsRouter.post("/", userExtractor, async (request, response) => {
     const body = request.body;
     const title = body.title;
     const author = body.author;
@@ -31,23 +30,14 @@ blogsRouter.post("/", async (request, response) => {
         likes = 0;
     }
 
-    const decodedToken = jwt.verify(request.token, process.env.SECRET);
-    if (!decodedToken.id) {
-        return response.status(401).json({ error: "token invalid" });
-    }
-
-    const user = await User.findById(decodedToken.id);
-    if (!user) {
-        return response
-            .status(400)
-            .json({ error: "UserId missing or not valid" });
-    }
+    const user = request.user;
 
     const blogObject = {
         title: title,
         author: author,
         url: url,
         likes: likes,
+        user: user._id,
     };
 
     const blog = new Blog(blogObject);
@@ -59,12 +49,28 @@ blogsRouter.post("/", async (request, response) => {
     response.status(201).json(savedBlog);
 });
 
-blogsRouter.delete("/:id", async (request, response) => {
+blogsRouter.delete("/:id", userExtractor, async (request, response) => {
     const id = request.params.id;
 
     if (!mongoose.Types.ObjectId.isValid(id)) {
         return response.status(400).send({ error: "malformatted id" });
     }
+
+    const user = request.user;
+    const blog = await Blog.findById(id);
+
+    if (!blog) {
+        return response.status(404).send({ error: "no matching id" });
+    }
+
+    if (blog.user.toString() !== user._id.toString()) {
+        return response
+            .status(401)
+            .json({ error: "not the author of the blog" });
+    }
+
+    user.blogs = user.blogs.filter(blog => blog._id.toString() !== id);
+    await user.save();
 
     const deletedBlog = await Blog.findByIdAndDelete(id);
 

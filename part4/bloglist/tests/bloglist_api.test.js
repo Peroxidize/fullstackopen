@@ -5,12 +5,21 @@ const supertest = require("supertest");
 const app = require("../app");
 const sample_data = require("./sample_data");
 const Blog = require("../models/blog");
+const User = require("../models/user");
 
 const api = supertest(app);
 
+let token;
+
 beforeEach(async () => {
     await Blog.deleteMany({});
-    await Blog.insertMany(sample_data.blogs);
+    await User.deleteMany({});
+    await User.insertMany(sample_data.users);
+
+    await api
+        .post("/api/login")
+        .send({ username: "sam", password: "password123" })
+        .then(response => (token = response.body.token));
 });
 
 describe("GET", () => {
@@ -26,12 +35,12 @@ describe("GET", () => {
 
     test("bloglist identifier is named id", async () => {
         await api.get("/api/blogs").expect(response => {
-            response.body[0].id;
+            response.body[0]._id;
         }, sample_data.blogs[0]._id);
     });
 });
 
-describe("POST", () => {
+describe("POST", async () => {
     test("blog has been added to database successfully", async () => {
         const sample = {
             title: "STOP USING AI",
@@ -42,13 +51,14 @@ describe("POST", () => {
 
         await api
             .post("/api/blogs")
+            .set("Authorization", `Bearer ${token}`)
             .send(sample)
             .expect(201)
             .expect("Content-Type", /application\/json/);
 
         const response = await api.get("/api/blogs");
 
-        assert.strictEqual(response.body.length, sample_data.blogs.length + 1);
+        assert.strictEqual(response.body.length, 1);
     });
 
     test("blog object is missing likes property default to 0", async () => {
@@ -60,6 +70,7 @@ describe("POST", () => {
 
         await api
             .post("/api/blogs")
+            .set("Authorization", `Bearer ${token}`)
             .send(sample)
             .expect(201)
             .expect(result => {
@@ -80,8 +91,28 @@ describe("POST", () => {
             likes: 5,
         };
 
-        await api.post("/api/blogs").send(sample).expect(400);
-        await api.post("/api/blogs").send(sample2).expect(400);
+        await api
+            .post("/api/blogs")
+            .set("Authorization", `Bearer ${token}`)
+            .send(sample)
+            .expect(400);
+
+        await api
+            .post("/api/blogs")
+            .set("Authorization", `Bearer ${token}`)
+            .send(sample2)
+            .expect(400);
+    });
+
+    test("Unauthorized if a token is not provided", async () => {
+        const sample = {
+            title: "STOP USING AI",
+            author: "Pewdiepie",
+            url: "https://youtube.com/",
+            likes: 123,
+        };
+
+        await api.post("/api/blogs").send(sample).expect(401);
     });
 });
 

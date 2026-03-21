@@ -5,6 +5,7 @@ const listWithOneBlog = [
         author: "Edsger W. Dijkstra",
         url: "https://homepages.cwi.nl/~storm/teaching/reader/Dijkstra68.pdf",
         likes: 5,
+        user: 
         __v: 0,
     },
 ];
@@ -64,21 +65,24 @@ const users = [
     {
         _id: "650b0000a1b2c300d4e50001",
         username: "sam",
-        passwordHash: "$2b$10$examplehashsam0000000000000000000000",
+        passwordHash:
+            "$2b$10$vdMKwmVath6sburEXrZfjOjdUVPOmBegLFRsNj.u9HZWHMKMB23zK",
         name: "Sam Rivera",
         blogs: [],
     },
     {
         _id: "650b0000a1b2c300d4e50002",
         username: "mira",
-        passwordHash: "$2b$10$examplehashmira000000000000000000000",
+        passwordHash:
+            "$2b$10$vdMKwmVath6sburEXrZfjOjdUVPOmBegLFRsNj.u9HZWHMKMB23zK",
         name: "Mira Chen",
         blogs: [],
     },
     {
         _id: "650b0000a1b2c300d4e50003",
         username: "tony",
-        passwordHash: "$2b$10$examplehashtony000000000000000000000",
+        passwordHash:
+            "$2b$10$vdMKwmVath6sburEXrZfjOjdUVPOmBegLFRsNj.u9HZWHMKMB23zK",
         name: "Tony Alvarez",
         blogs: [],
     },
