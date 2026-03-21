@@ -15,6 +15,7 @@ const Login = ({ setUser }) => {
         return;
       });
 
+    window.localStorage.setItem("user", JSON.stringify(response));
     setUser(response);
   };
 

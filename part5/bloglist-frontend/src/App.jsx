@@ -11,12 +11,28 @@ const App = () => {
     blogService.getAll().then(blogs => setBlogs(blogs));
   }, []);
 
+  useEffect(() => {
+    const userJSON = window.localStorage.getItem("user");
+    if (userJSON) {
+      const user = JSON.parse(userJSON);
+      setUser(user);
+    }
+  }, []);
+
+  const onLogout = () => {
+    window.localStorage.clear();
+    setUser(null);
+  };
+
   return (
     <>
       {!user && <Login setUser={setUser} />}
       {user && (
         <div>
           <h2>blogs</h2>
+          <p>
+            {user.name} logged in <button onClick={onLogout}>logout</button>
+          </p>
           {blogs.map(blog => {
             const username = blog.user.username;
 
