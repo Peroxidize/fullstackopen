@@ -1,6 +1,7 @@
 import { useState } from "react";
+import blogService from "../services/blogs";
 
-const Blog = ({ blog }) => {
+const Blog = ({ blog, fetchBlogs, showMessage }) => {
   const [view, setView] = useState(false);
 
   const blogStyle = {
@@ -9,6 +10,17 @@ const Blog = ({ blog }) => {
     border: "solid",
     borderWidth: 1,
     marginBottom: 5,
+  };
+
+  const increaseLikes = async id => {
+    try {
+      await blogService.increaseLikes(id);
+      fetchBlogs();
+    } catch (error) {
+      const errorMessage = error.response?.data?.error;
+      const altMessage = "unable to increase likes";
+      showMessage(errorMessage || altMessage, "error");
+    }
   };
 
   if (view) {
@@ -20,7 +32,8 @@ const Blog = ({ blog }) => {
         </div>
         <div>{blog.url}</div>
         <div>
-          likes {blog.likes} <button>like</button>
+          likes {blog.likes}{" "}
+          <button onClick={() => increaseLikes(blog.id)}>like</button>
         </div>
         <div>{blog.user.name}</div>
       </div>

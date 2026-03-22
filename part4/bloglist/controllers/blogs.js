@@ -107,4 +107,20 @@ blogsRouter.put("/:id", async (request, response) => {
     response.status(200).json(savedBlog);
 });
 
+blogsRouter.put("/likes/:id", userExtractor, async (request, response) => {
+    const id = request.params.id;
+
+    const blog = await Blog.findById(id);
+
+    if (!blog) {
+        return response.status(404).send({ error: "no matching id" });
+    }
+
+    blog.likes = blog.likes + 1;
+
+    const savedBlog = await blog.save();
+
+    response.status(200).json(savedBlog);
+});
+
 module.exports = blogsRouter;

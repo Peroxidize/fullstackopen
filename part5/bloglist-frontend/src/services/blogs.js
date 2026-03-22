@@ -17,10 +17,20 @@ const create = async blog => {
   const config = {
     headers: { Authorization: token },
   };
-  console.log(config);
+
   const response = await axios.post(baseUrl, blog, config);
   console.log(response.data);
   return response.data;
 };
 
-export default { getAll, create, setToken };
+const increaseLikes = async id => {
+  const config = {
+    headers: { Authorization: token },
+  };
+
+  const response = await axios.put(`${baseUrl}/likes/${id}`, {}, config);
+  console.log(response.data);
+  return response.data;
+};
+
+export default { getAll, create, setToken, increaseLikes };

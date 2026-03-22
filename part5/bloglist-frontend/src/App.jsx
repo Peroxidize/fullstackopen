@@ -78,7 +78,14 @@ const App = () => {
               return null;
             }
 
-            return <Blog key={blog.id} blog={blog} />;
+            return (
+              <Blog
+                key={blog.id}
+                blog={blog}
+                fetchBlogs={fetchBlogs}
+                showMessage={showMessage}
+              />
+            );
           })}
         </div>
       )}
