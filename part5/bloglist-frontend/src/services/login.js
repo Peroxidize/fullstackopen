@@ -8,6 +8,7 @@ const login = async (username, password) => {
     password: password,
   });
 
+  console.log(response.data);
   return response.data;
 };
 

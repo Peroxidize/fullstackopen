@@ -1,7 +1,7 @@
 import { useState } from "react";
 import blogService from "../services/blogs";
 
-const Create = ({ fetchBlogs }) => {
+const Create = ({ fetchBlogs, showMessage }) => {
   const [title, setTitle] = useState("");
   const [author, setAuthor] = useState("");
   const [url, setUrl] = useState("");
@@ -19,12 +19,16 @@ const Create = ({ fetchBlogs }) => {
     setAuthor("");
     setUrl("");
 
-    await blogService.create(blog).catch(error => {
-      console.log(error);
-      return;
-    });
-
-    fetchBlogs();
+    try {
+      await blogService.create(blog);
+      showMessage(`a new blog ${title} by ${author} added`, "success");
+      fetchBlogs();
+    } catch (error) {
+      console.log(error.response);
+      const errorMessage = error.response?.data?.error;
+      const altMessage = "failed to fetch blogs";
+      showMessage(errorMessage || altMessage, "error");
+    }
   };
 
   return (

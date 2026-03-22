@@ -1,29 +1,32 @@
 import { useState } from "react";
+import Notification from "../components/Notification";
 import loginService from "../services/login";
 import blogService from "../services/blogs";
 
-const Login = ({ setUser }) => {
+const Login = ({ setUser, showMessage, message, css, show }) => {
   const [username, setUsername] = useState("");
   const [password, setPassword] = useState("");
 
   const handleLogin = async event => {
     event.preventDefault();
 
-    const response = await loginService
-      .login(username, password)
-      .catch(error => {
-        console.log(error);
-        return;
-      });
+    try {
+      const response = await loginService.login(username, password);
 
-    window.localStorage.setItem("user", JSON.stringify(response));
-    setUser(response);
-    blogService.setToken(response.token);
+      window.localStorage.setItem("user", JSON.stringify(response));
+      setUser(response);
+      blogService.setToken(response.token);
+    } catch (error) {
+      const errorMessage = error.response?.data?.error;
+      const altMessage = "wrong username or password";
+      showMessage(errorMessage || altMessage, "error");
+    }
   };
 
   return (
     <>
       <h2>log in to application</h2>
+      <Notification message={message} css={css} show={show} />
       <form onSubmit={handleLogin}>
         <div>
           <label>
