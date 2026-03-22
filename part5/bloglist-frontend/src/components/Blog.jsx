@@ -5,4 +5,3 @@ const Blog = ({ blog }) => (
 );
 
 export default Blog;
-
