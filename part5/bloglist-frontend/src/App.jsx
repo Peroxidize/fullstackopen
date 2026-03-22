@@ -40,7 +40,7 @@ const App = () => {
   const fetchBlogs = async () => {
     try {
       const blogs = await blogService.getAll();
-      setBlogs(blogs);
+      setBlogs(blogs.sort((a, b) => b.likes - a.likes));
     } catch (error) {
       showMessage("unable to fetch blogs", "error");
     }
