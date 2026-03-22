@@ -2,6 +2,7 @@ import { useState } from "react";
 import blogService from "../services/blogs";
 
 const Create = ({ fetchBlogs, showMessage }) => {
+  const [showForm, setShowForm] = useState(false);
   const [title, setTitle] = useState("");
   const [author, setAuthor] = useState("");
   const [url, setUrl] = useState("");
@@ -30,6 +31,12 @@ const Create = ({ fetchBlogs, showMessage }) => {
       showMessage(errorMessage || altMessage, "error");
     }
   };
+
+  if (!showForm) {
+    return (
+      <button onClick={() => setShowForm(!showForm)}>create new blog</button>
+    );
+  }
 
   return (
     <>
@@ -61,6 +68,7 @@ const Create = ({ fetchBlogs, showMessage }) => {
         </div>
         <button>create</button>
       </form>
+      <button onClick={() => setShowForm(!showForm)}>cancel</button>
     </>
   );
 };

@@ -15,6 +15,13 @@ const App = () => {
   const [css, setCss] = useState("");
   const [show, setShow] = useState("");
 
+  const showMessage = (message, state) => {
+    setMessage(message);
+    setCss(state);
+    setShow("show");
+    setTimeout(() => setShow(""), 5000);
+  };
+
   useEffect(() => {
     personService
       .getAll()
@@ -29,13 +36,6 @@ const App = () => {
         showMessage(msg, "error");
       });
   }, []);
-
-  const showMessage = (message, state) => {
-    setMessage(message);
-    setCss(state);
-    setShow("show");
-    setTimeout(() => setShow(""), 5000);
-  };
 
   const onDeletePerson = person => {
     if (!window.confirm(`Delete ${person.name} ?`)) {

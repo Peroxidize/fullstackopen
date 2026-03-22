@@ -15,9 +15,7 @@ const App = () => {
 
   useEffect(() => {
     fetchBlogs();
-  }, []);
 
-  useEffect(() => {
     const userJSON = window.localStorage.getItem("user");
     if (userJSON) {
       const user = JSON.parse(userJSON);
@@ -41,7 +39,8 @@ const App = () => {
 
   const fetchBlogs = async () => {
     try {
-      await blogService.getAll().then(blogs => setBlogs(blogs));
+      const blogs = await blogService.getAll();
+      setBlogs(blogs);
     } catch (error) {
       showMessage("unable to fetch blogs", "error");
     }
