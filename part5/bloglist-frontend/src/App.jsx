@@ -12,6 +12,7 @@ const App = () => {
   const [message, setMessage] = useState("");
   const [css, setCss] = useState("");
   const [show, setShow] = useState("");
+  const [timeoutHandler, setTimeoutHandler] = useState(null);
 
   useEffect(() => {
     fetchBlogs();
@@ -25,10 +26,16 @@ const App = () => {
   }, []);
 
   const showMessage = (message, state) => {
+    if (timeoutHandler) {
+      clearTimeout(timeoutHandler);
+    }
+
     setMessage(message);
     setCss(state);
     setShow("show");
-    setTimeout(() => setShow(""), 5000);
+
+    const timeoutId = setTimeout(() => setShow(""), 5000);
+    setTimeoutHandler(timeoutId);
   };
 
   const onLogout = () => {

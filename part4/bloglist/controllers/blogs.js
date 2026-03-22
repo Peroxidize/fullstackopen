@@ -52,10 +52,6 @@ blogsRouter.post("/", userExtractor, async (request, response) => {
 blogsRouter.delete("/:id", userExtractor, async (request, response) => {
     const id = request.params.id;
 
-    if (!mongoose.Types.ObjectId.isValid(id)) {
-        return response.status(400).send({ error: "malformatted id" });
-    }
-
     const user = request.user;
     const blog = await Blog.findById(id);
 

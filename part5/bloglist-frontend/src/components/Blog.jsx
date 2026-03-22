@@ -23,6 +23,23 @@ const Blog = ({ blog, fetchBlogs, showMessage }) => {
     }
   };
 
+  const deleteBlog = async blog => {
+    const string = `Remove blog ${blog.title} by ${blog.author}`;
+    if (!window.confirm(string)) {
+      return;
+    }
+
+    try {
+      await blogService.deleteBlog(blog.id);
+      showMessage("blog deleted", "success");
+      fetchBlogs();
+    } catch (error) {
+      const errorMessage = error.response?.data?.error;
+      const altMessage = "unable to delete blog";
+      showMessage(errorMessage || altMessage, "error");
+    }
+  };
+
   if (view) {
     return (
       <div style={blogStyle}>
@@ -36,6 +53,7 @@ const Blog = ({ blog, fetchBlogs, showMessage }) => {
           <button onClick={() => increaseLikes(blog.id)}>like</button>
         </div>
         <div>{blog.user.name}</div>
+        <button onClick={() => deleteBlog(blog)}>remove</button>
       </div>
     );
   }
