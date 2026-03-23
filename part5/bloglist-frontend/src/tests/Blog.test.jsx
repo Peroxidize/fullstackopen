@@ -3,8 +3,6 @@ import userEvent from "@testing-library/user-event";
 import Blog from "../components/Blog";
 import blogService from "../services/blogs";
 
-vi.mock("../services/blog");
-
 const blog = {
   id: "1",
   title: "title test",
@@ -58,7 +56,6 @@ describe("Blog", () => {
     await user.click(likeButton);
     await user.click(likeButton);
 
-    console.log(increaseLikesMock);
     expect(increaseLikesMock).toHaveBeenCalledTimes(2);
     expect(increaseLikesMock).toHaveBeenCalledWith(blog.id);
 
