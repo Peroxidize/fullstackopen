@@ -24,19 +24,20 @@ describe("Blog", () => {
   });
 
   test("url and likes are shown when button is clicked", async () => {
-    render(<Blog blog={blog} />);
-
     const user = userEvent.setup();
+    const mockHandler = vi.fn();
 
-    const button = screen.queryByText("view");
-    await user.click(button);
+    render(
+      <Blog blog={blog} fetchBlogs={mockHandler} showMessage={mockHandler} />
+    );
 
-    const element = screen.queryByText(`${blog.title} ${blog.author}`);
-    const element2 = screen.queryByText(`${blog.url}`);
-    const element3 = screen.queryByText(`${blog.likes}`);
+    const viewButton = screen.queryByText("view");
+    await user.click(viewButton);
 
-    expect(element).toBeDefined();
-    expect(element2).toBeDefined();
-    expect(element3).toBeDefined();
+    const likeButton = screen.queryByText("like");
+    await user.click(likeButton);
+    await user.click(likeButton);
+
+    expect(mockHandler.mock.calls).toHaveLength(2);
   });
 });
