@@ -87,6 +87,7 @@ const App = () => {
 
             return (
               <Blog
+                data-testid="blog"
                 key={blog.id}
                 blog={blog}
                 fetchBlogs={fetchBlogs}

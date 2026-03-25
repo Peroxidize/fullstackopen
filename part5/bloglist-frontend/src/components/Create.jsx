@@ -34,7 +34,9 @@ const Create = ({ fetchBlogs, showMessage }) => {
 
   if (!showForm) {
     return (
-      <button onClick={() => setShowForm(!showForm)}>create new blog</button>
+      <button data-testid="showForm" onClick={() => setShowForm(!showForm)}>
+        create new blog
+      </button>
     );
   }
 

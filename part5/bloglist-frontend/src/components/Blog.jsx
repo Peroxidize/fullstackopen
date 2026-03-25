@@ -59,7 +59,7 @@ const Blog = ({ blog, fetchBlogs, showMessage }) => {
   }
 
   return (
-    <div style={blogStyle}>
+    <div style={blogStyle} data-testid="blog">
       {blog.title} {blog.author}{" "}
       <button onClick={() => setView(!view)}>view</button>
     </div>
