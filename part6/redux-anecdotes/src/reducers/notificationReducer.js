@@ -1,12 +1,23 @@
 import { createSlice } from "@reduxjs/toolkit";
 
-const initialState = "Initial value for Notification";
+const generateId = () => {
+    return Math.floor(Math.random() * 1000000);
+};
+
+const initialState = {
+    message: "",
+    timerId: generateId(),
+};
 
 const notificationSlice = createSlice({
     name: "notifications",
     initialState,
-    reducers: {},
+    reducers: {
+        setNotification(state, action) {
+            return { message: action.payload, timerId: generateId() };
+        },
+    },
 });
 
-//TODO create functions
+export const { setNotification } = notificationSlice.actions;
 export default notificationSlice.reducer;
