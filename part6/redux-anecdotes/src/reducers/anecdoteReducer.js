@@ -40,7 +40,7 @@ const reducer = (state = initialState, action) => {
         case "CREATE":
             return [...state, action.payload];
         default:
-            return state;
+            return state.sort((a, b) => b.votes - a.votes);
     }
 };
 
