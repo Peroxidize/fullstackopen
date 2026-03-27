@@ -27,4 +27,20 @@ const createAnecdote = async anecdote => {
     return response.json();
 };
 
-export default { getAll, createAnecdote };
+const increaseVote = async anecdote => {
+    const options = {
+        method: "PATCH",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ votes: anecdote.votes + 1 }),
+    };
+
+    const response = await fetch(`${baseUrl}/${anecdote.id}`, options);
+
+    if (!response.ok) {
+        throw new Error("Failed to increase vote");
+    }
+
+    return response.json();
+};
+
+export default { getAll, createAnecdote, increaseVote };
