@@ -8,17 +8,21 @@ const App = () => {
     console.log("vote");
   };
 
-  const result = useQuery({
+  const {
+    data: anecdotes,
+    isLoading,
+    isError,
+  } = useQuery({
     queryKey: ["anecdotes"],
     queryFn: getAll,
     retry: 1,
   });
 
-  if (result.isLoading) {
+  if (isLoading) {
     return <div>loading data...</div>;
   }
 
-  if (result.isError) {
+  if (isError) {
     return (
       <div>anecdote service is not available due to problems in server</div>
     );
@@ -31,7 +35,7 @@ const App = () => {
       <Notification />
       <AnecdoteForm />
 
-      {result.data.map(anecdote => (
+      {anecdotes.map(anecdote => (
         <div key={anecdote.id}>
           <div>{anecdote.content}</div>
           <div>
