@@ -1,7 +1,6 @@
 import { useEffect, useRef } from "react";
 import { useSelector, useDispatch } from "react-redux";
 import { setNotification } from "../reducers/notificationReducer";
-import store from "../store";
 
 const Notification = () => {
   const dispatch = useDispatch();
@@ -17,7 +16,6 @@ const Notification = () => {
   };
 
   useEffect(() => {
-    console.log(store.getState());
     if (message === "") {
       return;
     }

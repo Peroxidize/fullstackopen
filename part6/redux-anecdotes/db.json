@@ -31,9 +31,9 @@
             "votes": 0
         },
         {
-            "content": "asdasdsawqewq",
+            "content": "test",
             "votes": 0,
-            "id": "NFjcLlhyAhI"
+            "id": "vWPowig2sUA"
         }
     ],
     "$schema": "./node_modules/json-server/schema.json"
