@@ -3,9 +3,9 @@ import { useField } from "../hooks/useField";
 
 const CreateNew = props => {
   const navigate = useNavigate();
-  const content = useField("text");
-  const author = useField("text");
-  const info = useField("text");
+  const { reset: resetContent, ...content } = useField("text");
+  const { reset: resetAuthor, ...author } = useField("text");
+  const { reset: resetInfo, ...info } = useField("text");
 
   const handleSubmit = e => {
     e.preventDefault();
@@ -21,6 +21,13 @@ const CreateNew = props => {
     navigate("/");
 
     props.messageDispatch({ type: "SET", payload: msg });
+  };
+
+  const resetFields = event => {
+    event.preventDefault();
+    resetAuthor();
+    resetContent();
+    resetInfo();
   };
 
   return (
@@ -40,10 +47,9 @@ const CreateNew = props => {
           <input {...info} />
         </div>
         <button>create</button>
+        <button onClick={resetFields}>reset</button>
       </form>
-      <div>
-        {content.value} {author.value} {info.value}
-      </div>
+      <div></div>
     </div>
   );
 };
