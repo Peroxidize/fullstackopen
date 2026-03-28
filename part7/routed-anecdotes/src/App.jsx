@@ -1,5 +1,5 @@
-import { useState } from "react";
-import { Routes, Route, Link } from "react-router-dom";
+import { useState, useReducer } from "react";
+import { Routes, Route } from "react-router-dom";
 import Menu from "./components/Menu";
 import AnecdoteList from "./components/AnecdoteList";
 import About from "./components/About";
@@ -7,6 +7,7 @@ import CreateNew from "./components/CreateNew";
 import Footer from "./components/Footer";
 import Anecdote from "./components/Anecdote";
 import Notification from "./components/Notification";
+import messageReducer from "./reducers/messageReducer";
 
 const App = () => {
   const [anecdotes, setAnecdotes] = useState([
@@ -27,6 +28,7 @@ const App = () => {
   ]);
 
   const [notification, setNotification] = useState("");
+  const [message, messageDispatch] = useReducer(messageReducer, null);
 
   const addNew = anecdote => {
     anecdote.id = Math.round(Math.random() * 10000);
@@ -50,14 +52,19 @@ const App = () => {
     <>
       <h1>Software anecdotes</h1>
       <Menu />
-      <Notification />
+      <Notification message={message} messageDispatch={messageDispatch} />
       <Routes>
         <Route path="/" element={<AnecdoteList anecdotes={anecdotes} />} />
         <Route
           path="/anecdote/:id"
           element={<Anecdote anecdotes={anecdotes} />}
         />
-        <Route path="/create" element={<CreateNew addNew={addNew} />} />
+        <Route
+          path="/create"
+          element={
+            <CreateNew messageDispatch={messageDispatch} addNew={addNew} />
+          }
+        />
         <Route path="/About" element={<About />} />
       </Routes>
       <Footer />

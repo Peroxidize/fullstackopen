@@ -1,14 +1,11 @@
-import { useReducer, useEffect } from "react";
-import messageReducer from "../reducers/messageReducer";
+import { useEffect } from "react";
 
-const Notification = () => {
-  const [message, messageDispatch] = useReducer(messageReducer, null);
-
+const Notification = ({ message, messageDispatch }) => {
   useEffect(() => {
     setTimeout(() => {
       messageDispatch({ type: "NONE" });
     }, 5000);
-  }, []);
+  }, [message]);
 
   if (!message) {
     return null;
