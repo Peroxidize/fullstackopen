@@ -6,6 +6,7 @@ import About from "./components/About";
 import CreateNew from "./components/CreateNew";
 import Footer from "./components/Footer";
 import Anecdote from "./components/Anecdote";
+import Notification from "./components/Notification";
 
 const App = () => {
   const [anecdotes, setAnecdotes] = useState([
@@ -49,6 +50,7 @@ const App = () => {
     <>
       <h1>Software anecdotes</h1>
       <Menu />
+      <Notification />
       <Routes>
         <Route path="/" element={<AnecdoteList anecdotes={anecdotes} />} />
         <Route

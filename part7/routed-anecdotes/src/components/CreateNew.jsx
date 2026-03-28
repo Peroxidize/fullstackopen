@@ -1,8 +1,13 @@
-import { useState } from "react";
+import { useState, useReducer } from "react";
+import { useNavigate } from "react-router-dom";
+import messageReducer from "../reducers/messageReducer";
+
 const CreateNew = props => {
+  const navigate = useNavigate();
   const [content, setContent] = useState("");
   const [author, setAuthor] = useState("");
   const [info, setInfo] = useState("");
+  const [message, messageDispatch] = useReducer(messageReducer, null);
 
   const handleSubmit = e => {
     e.preventDefault();
@@ -12,6 +17,12 @@ const CreateNew = props => {
       info,
       votes: 0,
     });
+
+    const msg = `a new anecdote ${content} created!`;
+
+    messageDispatch({ type: "SET", payload: msg });
+
+    navigate("/");
   };
 
   return (
