@@ -22,11 +22,11 @@ app.use(
   )
 );
 
-app.get("/version", (req, res) => {
+app.get("/api/version", (req, res) => {
   res.send("1"); // change this string to ensure a new version deployed
 });
 
-app.get("/health", (req, res) => {
+app.get("/api/health", (req, res) => {
   res.send("ok");
 });
 
