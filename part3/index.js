@@ -8,6 +8,8 @@ const Phonebook = require("./models/phonebook");
 app.use(express.json());
 app.use(express.static("dist"));
 
+// some code changes
+
 const logPost = morgan.token("logPost", req => {
   if (!req.method === "POST") {
     return;
@@ -23,7 +25,7 @@ app.use(
 );
 
 app.get("/api/version", (req, res) => {
-  res.send("1"); // change this string to ensure a new version deployed
+  res.send("2"); // change this string to ensure a new version deployed
 });
 
 app.get("/api/health", (req, res) => {
