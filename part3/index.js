@@ -8,6 +8,8 @@ const Phonebook = require("./models/phonebook");
 app.use(express.json());
 app.use(express.static("dist"));
 
+// some code changes
+
 const logPost = morgan.token("logPost", req => {
   if (!req.method === "POST") {
     return;
