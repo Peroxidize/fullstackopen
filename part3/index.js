@@ -8,7 +8,7 @@ const Phonebook = require("./models/phonebook");
 app.use(express.json());
 app.use(express.static("dist"));
 
-const logPost = morgan.token("logPost", (req) => {
+const logPost = morgan.token("logPost", req => {
   if (!req.method === "POST") {
     return;
   }
@@ -18,19 +18,27 @@ const logPost = morgan.token("logPost", (req) => {
 
 app.use(
   morgan(
-    ":method :url :status :res[content-length] - :response-time ms :logPost",
-  ),
+    ":method :url :status :res[content-length] - :response-time ms :logPost"
+  )
 );
 
+app.get("/version", (req, res) => {
+  res.send("1"); // change this string to ensure a new version deployed
+});
+
+app.get("/health", (req, res) => {
+  res.send("ok");
+});
+
 app.get("/api/persons", (request, response) => {
-  Phonebook.find({}).then((phonebook) => {
+  Phonebook.find({}).then(phonebook => {
     response.json(phonebook);
   });
 });
 
 app.get("/info", (request, response) => {
   const currentDate = new Date();
-  Phonebook.find({}).then((phonebook) => {
+  Phonebook.find({}).then(phonebook => {
     const strout = `<p>Phonebook has info for ${phonebook.length} people</p>${currentDate}`;
     response.send(strout);
   });
@@ -39,23 +47,23 @@ app.get("/info", (request, response) => {
 app.get("/api/persons/:id", (request, response) => {
   const id = request.params.id;
   Phonebook.findById(id)
-    .then((phonebook) => {
+    .then(phonebook => {
       if (phonebook) {
         return response.json(phonebook);
       }
       response.status(404).end();
     })
-    .catch((error) => next(error));
+    .catch(error => next(error));
 });
 
 app.delete("/api/persons/:id", (request, response) => {
   const id = request.params.id;
 
   Phonebook.findByIdAndDelete(id)
-    .then((result) => {
+    .then(result => {
       response.status(204).end();
     })
-    .catch((error) => next(error));
+    .catch(error => next(error));
 });
 
 app.post("/api/persons", (request, response, next) => {
@@ -77,10 +85,10 @@ app.post("/api/persons", (request, response, next) => {
 
   phonebook
     .save()
-    .then((savedPhonebook) => {
+    .then(savedPhonebook => {
       response.json(savedPhonebook);
     })
-    .catch((error) => next(error));
+    .catch(error => next(error));
 });
 
 app.put("/api/persons/:id", (request, response, next) => {
@@ -88,18 +96,18 @@ app.put("/api/persons/:id", (request, response, next) => {
   const id = request.params.id;
 
   Phonebook.findById(id)
-    .then((phonebook) => {
+    .then(phonebook => {
       if (!phonebook) {
         return response.status(404).end();
       }
 
       phonebook.number = number;
 
-      return phonebook.save().then((updatedNote) => {
+      return phonebook.save().then(updatedNote => {
         response.json(updatedNote);
       });
     })
-    .catch((error) => next(error));
+    .catch(error => next(error));
 });
 
 const unknownEndpoint = (request, response) => {

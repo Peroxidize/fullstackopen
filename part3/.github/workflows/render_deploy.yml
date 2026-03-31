@@ -1,0 +1,10 @@
+---
+on:
+  push:
+    branches: [main]
+jobs:
+  deploy_job:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Trigger deployment
+        run: curl ${{ secrets.RENDER_DEPLOY_HOOK }}

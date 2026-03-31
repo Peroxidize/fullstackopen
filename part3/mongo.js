@@ -25,7 +25,7 @@ if (process.argv.length === 5) {
     number: number,
   });
 
-  phonebook.save().then((result) => {
+  phonebook.save().then(result => {
     console.log(`added ${name} number ${number} to phonebook`);
     mongoose.connection.close();
   });
@@ -33,9 +33,9 @@ if (process.argv.length === 5) {
   return;
 }
 
-Phonebook.find({}).then((result) => {
+Phonebook.find({}).then(result => {
   console.log("phonebook:");
-  result.forEach((phonebook) => {
+  result.forEach(phonebook => {
     console.log(`${phonebook.name} ${phonebook.number}`);
   });
   mongoose.connection.close();
