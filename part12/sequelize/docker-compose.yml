@@ -1,0 +1,17 @@
+name: Sequelize
+services:
+  db:
+    image: postgres:18.3
+    restart: always
+    environment:
+      - POSTGRES_PASSWORD=${POSTGRES_PASSWORD}
+    networks:
+      - server-side
+    ports:
+      - 5432:5432
+    volumes:
+      - db-data:/var/lib/postgresql
+networks:
+  server-side:
+volumes:
+  db-data:
